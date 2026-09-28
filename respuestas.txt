@@ -1,0 +1,38 @@
+1. Explica dos diferencias entre una API REST y un servidor GraphQL. (2 pts)
+
+Respuesta:
+La primera diferencia es la forma de exponer los datos. En REST hay varios endpoints, uno por recurso (por ejemplo /laptops, /laptops/1, /usuarios), y cada uno se consume con los métodos HTTP (GET, POST, PUT, DELETE). En GraphQL normalmente hay un solo endpoint (/graphql) y lo que cambia es la consulta (query o mutation) que el cliente envía.
+
+La segunda diferencia es quién decide qué datos se regresan. En REST el servidor define la estructura de la respuesta, así que a veces llegan campos de más (over-fetching) o hay que hacer varias peticiones para juntar la información (under-fetching). En GraphQL el cliente pide exactamente los campos que necesita, y el servidor responde solo con eso, basándose en un esquema tipado.
+
+
+2. Indica una situación en la que conviene usar REST y otra en la que conviene usar GraphQL. (2 pts)
+
+Respuesta:
+Conviene usar REST en un sistema sencillo tipo CRUD, por ejemplo un inventario de laptops donde solo se necesita crear, consultar, actualizar y eliminar registros. Es fácil de implementar, de probar y aprovecha bien el caché de HTTP.
+
+Conviene usar GraphQL en una aplicación con datos muy relacionados y varios clientes distintos, por ejemplo una app móvil y una web de una red social, donde cada pantalla necesita combinaciones diferentes de datos (usuario, sus publicaciones, comentarios, etc.). Con una sola consulta se obtiene todo lo necesario sin pedir información de más, lo cual ayuda sobre todo en móviles.
+
+
+3. ¿Qué diferencia hay entre una imagen y un contenedor? ¿Qué papel cumple el Dockerfile en esa relación? (2 pts)
+
+Respuesta:
+Una imagen es una plantilla de solo lectura que contiene todo lo necesario para ejecutar una aplicación: el sistema base, las dependencias, el código y la configuración. Un contenedor es una instancia en ejecución de esa imagen; es decir, la imagen es como la "receta" o el "molde" y el contenedor es lo que realmente se está ejecutando. De una misma imagen se pueden crear varios contenedores.
+
+El Dockerfile es el archivo con las instrucciones para construir la imagen (por ejemplo FROM, COPY, RUN, CMD). La relación queda así: Dockerfile --(docker build)--> imagen --(docker run)--> contenedor.
+
+
+4. ¿Para qué sirve Docker Compose? En el mapeo 8000:8000, ¿qué representa el primer 8000 y qué representa el segundo? (2 pts)
+
+Respuesta:
+Docker Compose sirve para definir y levantar aplicaciones de varios contenedores desde un solo archivo (docker-compose.yml). Ahí se configuran los servicios (por ejemplo la API y la base de datos MySQL), sus puertos, variables de entorno, volúmenes y redes, y con un solo comando (docker compose up) se levanta todo junto y conectado.
+
+En el mapeo 8000:8000, el primer 8000 es el puerto de la máquina host (mi computadora), que es por donde accedo desde el navegador, por ejemplo localhost:8000. El segundo 8000 es el puerto dentro del contenedor, donde la aplicación está escuchando. Es decir, el formato es HOST:CONTENEDOR.
+
+
+5. ¿Por qué las laptops del ejercicio 1 se guardan en MySQL y no en una lista de Python? ¿Qué identifica la llave primaria id? (2 pts)
+
+Respuesta:
+Se guardan en MySQL porque una lista de Python solo vive en la memoria mientras el programa está corriendo; si el servidor o el contenedor se reinicia, todos los datos se pierden. MySQL guarda la información de forma persistente, además permite hacer consultas, mantener la integridad de los datos y que varios usuarios o servicios accedan a la misma información al mismo tiempo.
+
+La llave primaria id identifica de forma única a cada laptop dentro de la tabla. No puede repetirse ni ser nula, y sirve para buscar, actualizar o eliminar una laptop específica (por ejemplo GET /laptops/3).
